@@ -1,96 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* The Gift Giver - Dark Luxury Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
+    /* Core Obsidian Palette */
+    --background: 0 0% 4%;
+    --foreground: 39 45% 65%;
+    
+    /* Corrupted Gold - Primary text/details */
+    --gold: 30 50% 55%;
+    --gold-light: 35 55% 70%;
+    --gold-muted: 30 30% 45%;
+    
+    /* Deep Magma Red - CTAs and accents */
+    --magma: 0 72% 51%;
+    --magma-glow: 15 100% 55%;
+    --magma-dark: 0 60% 35%;
+    
+    /* Surface layers */
+    --card: 0 0% 6%;
+    --card-foreground: 39 45% 65%;
+    --card-elevated: 0 0% 8%;
+    
+    --popover: 0 0% 6%;
+    --popover-foreground: 39 45% 65%;
+    
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 39 45% 65%;
+    
+    --muted: 0 0% 12%;
+    --muted-foreground: 30 20% 50%;
+    
+    --accent: 30 50% 55%;
+    --accent-foreground: 0 0% 4%;
+    
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 30 20% 15%;
+    --input: 0 0% 12%;
+    --ring: 0 72% 51%;
+    
+    --radius: 0.25rem;
+    
+    /* Sidebar */
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 39 45% 65%;
+    --sidebar-primary: 0 72% 51%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 39 45% 65%;
+    --sidebar-border: 30 20% 15%;
+    --sidebar-ring: 0 72% 51%;
   }
 }
 
@@ -98,8 +67,216 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
-  body {
-    @apply bg-background text-foreground;
+  
+  html {
+    scroll-behavior: smooth;
   }
+  
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  /* Ember glow effect */
+  .ember-glow {
+    box-shadow: 
+      0 0 20px hsl(var(--magma) / 0.3),
+      0 0 40px hsl(var(--magma) / 0.2),
+      0 0 60px hsl(var(--magma) / 0.1);
+  }
+  
+  .ember-glow-subtle {
+    box-shadow: 
+      0 0 10px hsl(var(--magma) / 0.2),
+      0 0 20px hsl(var(--magma) / 0.1);
+  }
+  
+  /* Gold text gradient */
+  .text-gold-gradient {
+    @apply bg-gradient-to-r from-[hsl(35,55%,70%)] via-[hsl(30,50%,55%)] to-[hsl(25,45%,50%)] bg-clip-text text-transparent;
+  }
+  
+  /* Card hover lift effect */
+  .card-lift {
+    @apply transition-all duration-500 ease-out;
+  }
+  
+  .card-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.5),
+      0 0 30px hsl(var(--magma) / 0.15);
+  }
+  
+  /* Molten border animation */
+  .molten-border {
+    position: relative;
+  }
+  
+  .molten-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--magma)),
+      hsl(var(--gold)),
+      hsl(var(--magma-dark)),
+      hsl(var(--magma))
+    );
+    background-size: 400% 400%;
+    border-radius: inherit;
+    z-index: -1;
+    animation: molten-flow 4s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .molten-border:hover::before {
+    opacity: 1;
+  }
+  
+  /* Glass morphism for overlays */
+  .glass-dark {
+    @apply bg-background/80 backdrop-blur-md;
+  }
+  
+  /* Cinematic overlay */
+  .cinematic-overlay {
+    background: linear-gradient(
+      180deg,
+      hsl(0 0% 4% / 0.6) 0%,
+      hsl(0 0% 4% / 0.3) 50%,
+      hsl(0 0% 4% / 0.8) 100%
+    );
+  }
+  
+  /* Vignette effect */
+  .vignette {
+    box-shadow: inset 0 0 150px 60px hsl(0 0% 0% / 0.8);
+  }
+}
+
+@layer utilities {
+  /* Molten flow animation */
+  @keyframes molten-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  /* Ember float animation */
+  @keyframes ember-float {
+    0%, 100% {
+      transform: translateY(0) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.1);
+      opacity: 1;
+    }
+  }
+  
+  /* Pulse glow */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--magma) / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--magma) / 0.6);
+    }
+  }
+  
+  /* Text reveal */
+  @keyframes text-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+      filter: blur(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+  }
+  
+  /* Fade in up */
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Scale in */
+  @keyframes scale-in {
+    0% {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Ripple effect */
+  @keyframes ripple-out {
+    0% {
+      transform: scale(0);
+      opacity: 0.6;
+    }
+    100% {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  .animate-ember-float {
+    animation: ember-float 3s ease-in-out infinite;
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .animate-text-reveal {
+    animation: text-reveal 1s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.5s ease-out forwards;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(0 0% 4%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(30 20% 20%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(30 30% 30%);
 }
