@@ -1,10 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus, Minus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 
 export function CartDrawer() {
+  const navigate = useNavigate();
   const { items, cartOpen, setCartOpen, total, updateQuantity, removeItem } = useCart();
+
+  const handleCheckout = () => {
+    setCartOpen(false);
+    navigate("/checkout");
+  };
 
   return (
     <AnimatePresence>
@@ -134,7 +141,12 @@ export function CartDrawer() {
                   Shipping and taxes calculated at the next step
                 </p>
 
-                <Button variant="hero" className="w-full" size="xl">
+                <Button 
+                  variant="hero" 
+                  className="w-full" 
+                  size="xl"
+                  onClick={handleCheckout}
+                >
                   Fulfill the Pact
                 </Button>
               </div>
