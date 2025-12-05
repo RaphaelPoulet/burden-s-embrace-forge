@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, User, Menu, X } from "lucide-react";
+import { ShoppingBag, User, Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
 
 const EyeLogo = () => (
   <svg
@@ -21,13 +22,14 @@ const EyeLogo = () => (
 const navLinks = [
   { name: "Artefacts of Power", href: "#catalogue" },
   { name: "The Gift Giver's Pledge", href: "#about" },
-  { name: "Your Allegiance", href: "#account" },
 ];
 
 export function Header() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { items, setCartOpen } = useCart();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,6 +42,19 @@ export function Header() {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
+  const handleCartClick = () => {
+    if (!user) {
+      navigate("/auth");
+    } else {
+      setCartOpen(true);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
@@ -50,7 +65,7 @@ export function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="group flex items-center gap-3">
+        <Link to="/home" className="group flex items-center gap-3">
           <EyeLogo />
           <span className="font-display text-lg tracking-[0.2em] text-gold hidden sm:block">
             THE GIFT GIVER
@@ -72,22 +87,36 @@ export function Header() {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gold-muted hover:text-gold hidden sm:flex"
-          >
-            <User className="w-5 h-5" />
-          </Button>
+          {user ? (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gold-muted hover:text-gold hidden sm:flex"
+              onClick={handleSignOut}
+              title="Sign Out"
+            >
+              <LogOut className="w-5 h-5" />
+            </Button>
+          ) : (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-gold-muted hover:text-gold hidden sm:flex"
+              onClick={() => navigate("/auth")}
+              title="Sign In"
+            >
+              <User className="w-5 h-5" />
+            </Button>
+          )}
 
           <Button
             variant="ghost"
             size="icon"
             className="text-gold-muted hover:text-gold relative"
-            onClick={() => setCartOpen(true)}
+            onClick={handleCartClick}
           >
             <ShoppingBag className="w-5 h-5" />
-            {totalItems > 0 && (
+            {user && totalItems > 0 && (
               <motion.span
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -147,6 +176,31 @@ export function Header() {
                     {link.name}
                   </motion.a>
                 ))}
+                
+                {user ? (
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      navigate("/auth");
+                    }}
+                  >
+                    Your Allegiance
+                  </motion.button>
+                )}
               </nav>
 
               <div className="mt-auto">
@@ -156,11 +210,11 @@ export function Header() {
                   className="w-full"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    setCartOpen(true);
+                    handleCartClick();
                   }}
                 >
                   <ShoppingBag className="w-5 h-5 mr-2" />
-                  The Burden ({totalItems})
+                  The Burden {user && totalItems > 0 ? `(${totalItems})` : ""}
                 </Button>
               </div>
             </div>
