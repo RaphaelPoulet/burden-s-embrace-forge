@@ -1,8 +1,25 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ProductCard } from "@/components/ProductCard";
 import { products } from "@/data/products";
 
+type FilterCategory = "all" | "elven" | "dwarven" | "mortal" | "shadow";
+
 export function CatalogueSection() {
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
+
+  const filteredProducts = activeFilter === "all" 
+    ? products 
+    : products.filter(p => p.category === activeFilter);
+
+  const filters: { key: FilterCategory; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "elven", label: "Elven" },
+    { key: "dwarven", label: "Dwarven" },
+    { key: "mortal", label: "Mortal" },
+    { key: "shadow", label: "Shadow" },
+  ];
+
   return (
     <section id="catalogue" className="py-24 bg-background relative">
       {/* Subtle Top Gradient */}
@@ -37,23 +54,24 @@ export function CatalogueSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-wrap justify-center gap-3 mb-12"
         >
-          {["All", "Elven", "Dwarven", "Mortal", "Shadow"].map((filter) => (
+          {filters.map((filter) => (
             <button
-              key={filter}
+              key={filter.key}
+              onClick={() => setActiveFilter(filter.key)}
               className={`px-5 py-2 text-sm font-body tracking-wider uppercase border rounded-full transition-all duration-300 ${
-                filter === "All"
+                activeFilter === filter.key
                   ? "bg-gold/10 border-gold/50 text-gold"
                   : "border-border/50 text-muted-foreground hover:border-gold/30 hover:text-gold-muted"
               }`}
             >
-              {filter}
+              {filter.label}
             </button>
           ))}
         </motion.div>
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product, index) => (
+          {filteredProducts.map((product, index) => (
             <ProductCard key={product.id} product={product} index={index} />
           ))}
         </div>
