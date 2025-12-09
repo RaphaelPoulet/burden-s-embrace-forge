@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export function Footer() {
+  const navLinks = [
+    { label: "Artefacts", href: "/home#catalogue" },
+    { label: "The Pledge", href: "/pledge" },
+    { label: "Your Allegiance", href: "/auth" },
+  ];
+
   return (
     <footer className="bg-card border-t border-border/50 py-16">
       <div className="container mx-auto px-6">
@@ -33,18 +40,16 @@ export function Footer() {
               Navigate
             </h4>
             <ul className="space-y-3">
-              {["Artefacts", "The Pledge", "Your Allegiance", "The Burden"].map(
-                (link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-muted-foreground hover:text-gold transition-colors"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                )
-              )}
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.href}
+                    className="text-sm text-muted-foreground hover:text-gold transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </motion.div>
 
