@@ -280,3 +280,19 @@
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(30 30% 30%);
 }
+
+/* Mobile safe areas */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0);
+}
+
+/* Mobile bottom padding for content */
+@media (max-width: 768px) {
+  .mobile-content-padding {
+    padding-bottom: 80px;
+  }
+}
