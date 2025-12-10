@@ -20,8 +20,8 @@ const EyeLogo = () => (
 );
 
 const navLinks = [
-  { name: "Artefacts of Power", href: "#catalogue" },
-  { name: "The Gift Giver's Pledge", href: "#about" },
+  { name: "Artefacts of Power", href: "/home#catalogue", isRoute: false },
+  { name: "The Gift Giver's Pledge", href: "/pledge", isRoute: true },
 ];
 
 export function Header() {
@@ -72,16 +72,25 @@ export function Header() {
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="font-body text-sm tracking-wider text-gold-muted hover:text-gold transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
-            >
-              {link.name}
-            </a>
+            link.isRoute ? (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="font-body text-sm tracking-wider text-gold-muted hover:text-gold transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {link.name}
+              </Link>
+            ) : (
+              <a
+                key={link.name}
+                href={link.href}
+                className="font-body text-sm tracking-wider text-gold-muted hover:text-gold transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
+              >
+                {link.name}
+              </a>
+            )
           ))}
         </nav>
 
@@ -164,17 +173,29 @@ export function Header() {
 
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link, index) => (
-                  <motion.a
-                    key={link.name}
-                    href={link.href}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {link.name}
-                  </motion.a>
+                  link.isRoute ? (
+                    <motion.div key={link.name}>
+                      <Link
+                        to={link.href}
+                        className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  ) : (
+                    <motion.a
+                      key={link.name}
+                      href={link.href}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </motion.a>
+                  )
                 ))}
                 
                 {user ? (
