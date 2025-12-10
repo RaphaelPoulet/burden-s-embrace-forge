@@ -6,6 +6,7 @@ export function Footer() {
     { label: "Artefacts", href: "/home#catalogue" },
     { label: "The Pledge", href: "/pledge" },
     { label: "Your Allegiance", href: "/auth" },
+    { label: "Conditions of Servitude", href: "/terms" },
   ];
 
   return (
