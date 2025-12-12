@@ -115,7 +115,7 @@ const Intro = () => {
                   animate={{ scaleY: 1, opacity: 1 }}
                   transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
                 >
-                  <div className="relative">
+                  <div className="relative flex items-center justify-center">
                     {/* Inner fire */}
                     <motion.div
                       className="absolute -inset-4 rounded-full bg-magma/30 blur-xl"
