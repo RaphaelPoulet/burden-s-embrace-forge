@@ -8,12 +8,6 @@ const Intro = () => {
   const [canSkip, setCanSkip] = useState(false);
 
   useEffect(() => {
-    // Check if user has seen intro
-    const hasSeenIntro = sessionStorage.getItem("hasSeenIntro");
-    if (hasSeenIntro) {
-      navigate("/home", { replace: true });
-      return;
-    }
 
     // Animation phases
     const timers = [
