@@ -77,7 +77,7 @@ const Intro = () => {
               />
 
               {/* Eye shape container */}
-              <div className="relative w-64 h-32 md:w-96 md:h-48">
+              <div className="relative w-64 h-32 md:w-96 md:h-48 flex items-center justify-center">
                 {/* Eye outline */}
                 <svg viewBox="0 0 200 100" className="w-full h-full">
                   <defs>
