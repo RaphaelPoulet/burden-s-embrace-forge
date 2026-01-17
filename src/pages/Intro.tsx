@@ -140,7 +140,7 @@ const Intro = () => {
                 {[...Array(12)].map((_, i) => (
                   <motion.div
                     key={i}
-                    className="absolute top-1/2 left-1/2 w-1 h-8 bg-gradient-to-t from-magma via-gold to-transparent rounded-full"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-t from-magma via-gold to-transparent rounded-full"
                     style={{
                       transformOrigin: "center 40px",
                       rotate: `${i * 30}deg`,
