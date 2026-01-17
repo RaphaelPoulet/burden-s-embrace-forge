@@ -14,6 +14,7 @@ import Checkout from "./pages/Checkout";
 import Pledge from "./pages/Pledge";
 import Terms from "./pages/Terms";
 import Install from "./pages/Install";
+import ProductDetail from "./pages/ProductDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const AppContent = () => {
         <Route path="/pledge" element={<Pledge />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/install" element={<Install />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
