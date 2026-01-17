@@ -122,7 +122,7 @@ const Intro = () => {
                 </motion.div>
 
                 {/* Surrounding iris flames */}
-                {[...Array(12)].map((_, i) => <motion.div key={i} className="absolute top- left- -translate-x-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-t from-magma via-gold to-transparent rounded-full" style={{
+                {[...Array(12)].map((_, i) => <motion.div key={i} className="absolute top- left- -translate-x- -translate-y- w-1 h-8 bg-gradient-to-t from-magma via-gold to-transparent rounded-full" style={{
               transformOrigin: "center 40px",
               rotate: `${i * 30}deg`
             }} initial={{
