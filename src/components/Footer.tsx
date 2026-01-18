@@ -81,6 +81,20 @@ export function Footer() {
             "One Ring to rule them all..."
           </p>
         </div>
+
+        {/* Legal Disclaimer */}
+        <div className="mt-12 pt-8 border-t border-border/20">
+          <p className="text-[10px] leading-relaxed text-muted-foreground/60 text-center max-w-4xl mx-auto mb-4">
+            DISCLAIMER: This website is a non-profit, educational design project created for portfolio purposes only. 
+            It is not affiliated with, endorsed by, or associated with Middle-earth Enterprises, the Tolkien Estate, 
+            or the creators of the Lord of the Rings films. All trademarks and universe lore belong to their respective owners.
+          </p>
+          <p className="text-[10px] leading-relaxed text-muted-foreground/60 text-center max-w-4xl mx-auto italic">
+            AVERTISSEMENT : Ce site est un projet de design éducatif à but non lucratif, créé uniquement pour un portfolio. 
+            Il n'est pas affilié à, approuvé par, ou associé à Middle-earth Enterprises, au Tolkien Estate, 
+            ou aux créateurs des films Le Seigneur des Anneaux. Toutes les marques déposées et l'univers appartiennent à leurs détenteurs respectifs.
+          </p>
+        </div>
       </div>
     </footer>
   );

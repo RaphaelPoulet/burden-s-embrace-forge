@@ -142,19 +142,15 @@ export default function ProductDetail() {
                       <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Metal</p>
                       <p className="font-body text-foreground">{details.materials.metal}</p>
                     </div>
-                    {details.materials.stone && (
+                    {details.materials.stones && details.materials.stones.length > 0 && (
                       <div className="bg-card/50 border border-border/30 rounded-lg p-4">
-                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Stone</p>
-                        <p className="font-body text-foreground">{details.materials.stone}</p>
+                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Stones</p>
+                        <p className="font-body text-foreground">{details.materials.stones.join(", ")}</p>
                       </div>
                     )}
-                    <div className="bg-card/50 border border-border/30 rounded-lg p-4">
+                    <div className="bg-card/50 border border-border/30 rounded-lg p-4 col-span-2">
                       <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Finish</p>
                       <p className="font-body text-foreground">{details.materials.finish}</p>
-                    </div>
-                    <div className="bg-card/50 border border-border/30 rounded-lg p-4">
-                      <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Weight</p>
-                      <p className="font-body text-foreground">{details.materials.weight}</p>
                     </div>
                   </div>
                 </div>

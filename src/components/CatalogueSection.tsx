@@ -1,24 +1,29 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ProductCard } from "@/components/ProductCard";
-import { products } from "@/data/products";
+import { products, categories } from "@/data/products";
 
-type FilterCategory = "all" | "elven" | "dwarven" | "mortal" | "shadow";
+type FilterCategory = "all" | "elven" | "dwarven" | "mortal";
 
 export function CatalogueSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>("all");
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("elven");
 
-  const filteredProducts = activeFilter === "all" 
-    ? products 
-    : products.filter(p => p.category === activeFilter);
+  // Exclude the One Ring from the grid (it has its own spotlight)
+  const catalogProducts = products.filter((p) => p.category !== "the-one");
 
-  const filters: { key: FilterCategory; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "elven", label: "Elven" },
-    { key: "dwarven", label: "Dwarven" },
-    { key: "mortal", label: "Mortal" },
-    { key: "shadow", label: "Shadow" },
+  const filteredProducts =
+    activeFilter === "all"
+      ? catalogProducts
+      : catalogProducts.filter((p) => p.category === activeFilter);
+
+  const filters: { key: FilterCategory; label: string; count: number }[] = [
+    { key: "elven", label: "The Three", count: 3 },
+    { key: "dwarven", label: "The Seven", count: 7 },
+    { key: "mortal", label: "The Nine", count: 9 },
+    { key: "all", label: "All Rings", count: 19 },
   ];
+
+  const currentCategory = activeFilter !== "all" ? categories[activeFilter] : null;
 
   return (
     <section id="catalogue" className="py-24 bg-background relative">
@@ -38,59 +43,74 @@ export function CatalogueSection() {
             The Forges of Power
           </p>
           <h2 className="font-display text-4xl sm:text-5xl lg:text-6xl tracking-wide text-gold-gradient mb-6">
-            Artefacts of Power
+            The Great Rings
           </h2>
           <p className="font-body text-lg text-muted-foreground max-w-2xl mx-auto">
-            Nine rings for mortal men, doomed to die. Seven for the dwarf-lords in their halls of stone.
-            Three for the elven-kings under the sky. Choose your instrument of dominion.
+            Three Rings for the Elven-kings under the sky, Seven for the Dwarf-lords in their halls of stone,
+            Nine for Mortal Men doomed to die.
           </p>
         </motion.div>
 
-        {/* Filter Tags */}
+        {/* Filter Tabs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="flex flex-wrap justify-center gap-3 mb-12"
+          className="flex flex-wrap justify-center gap-3 mb-8"
         >
           {filters.map((filter) => (
             <button
               key={filter.key}
               onClick={() => setActiveFilter(filter.key)}
-              className={`px-5 py-2 text-sm font-body tracking-wider uppercase border rounded-full transition-all duration-300 ${
+              className={`px-6 py-3 text-sm font-body tracking-wider uppercase border rounded-sm transition-all duration-300 ${
                 activeFilter === filter.key
                   ? "bg-gold/10 border-gold/50 text-gold"
                   : "border-border/50 text-muted-foreground hover:border-gold/30 hover:text-gold-muted"
               }`}
             >
               {filter.label}
+              <span className="ml-2 text-xs opacity-60">({filter.count})</span>
             </button>
           ))}
         </motion.div>
 
-        {/* Product Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product, index) => (
-            <ProductCard key={product.id} product={product} index={index} />
-          ))}
-        </div>
+        {/* Category Description */}
+        <AnimatePresence mode="wait">
+          {currentCategory && (
+            <motion.div
+              key={activeFilter}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="text-center mb-12"
+            >
+              <h3 className="font-display text-2xl text-gold mb-3">
+                {currentCategory.name}
+              </h3>
+              <p className="font-body text-muted-foreground max-w-xl mx-auto">
+                {currentCategory.description}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* View All CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mt-16"
-        >
-          <p className="text-muted-foreground mb-6">
-            More treasures await in the depths of the forge...
-          </p>
-          <button className="font-display text-sm tracking-[0.2em] uppercase text-gold hover:text-gold-light transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-px after:bg-gold/30 after:transition-all hover:after:bg-gold">
-            View All Artefacts
-          </button>
-        </motion.div>
+        {/* Product Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeFilter}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {filteredProducts.map((product, index) => (
+              <ProductCard key={product.id} product={product} index={index} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
