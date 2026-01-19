@@ -1,3 +1,6 @@
+import naryaImage from "@/assets/narya.png";
+import vilyaImage from "@/assets/vilya.png";
+
 export interface Product {
   id: string;
   name: string;
@@ -27,7 +30,7 @@ export const products: Product[] = [
     description: "Set with a ruby, the flame of Anor",
     lore: "The Ring of Fire, set with a great ruby that glows like living flame. It kindles the hearts of those who behold it and inspires resistance against despair and tyranny. Last borne by Mithrandir.",
     price: 12999,
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop",
+    image: naryaImage,
     category: "elven",
   },
   {
@@ -45,7 +48,7 @@ export const products: Product[] = [
     description: "Mightiest of the Three, set with sapphire",
     lore: "The Ring of Air, mightiest of the Three, set with a great blue sapphire that holds the light of the heavens. It possesses the power to heal and to preserve, wielded by Elrond Half-elven in the valley of Imladris.",
     price: 14999,
-    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&h=600&fit=crop",
+    image: vilyaImage,
     category: "elven",
   },
 
