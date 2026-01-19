@@ -1,6 +1,6 @@
 export interface ProductMaterials {
   metal: string;
-  stone?: string;
+  stones?: string[];
   finish: string;
   weight: string;
 }
@@ -14,7 +14,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-narya": {
     materials: {
       metal: "Enchanted Red Gold",
-      stone: "Fire Ruby of the Maiar",
+      stones: ["Fire Ruby of the Maiar"],
       finish: "Burnished with dragon-flame",
       weight: "12.4 grams"
     },
@@ -23,7 +23,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-nenya": {
     materials: {
       metal: "Pure Mithril",
-      stone: "White Diamond of Adamant",
+      stones: ["White Diamond of Adamant"],
       finish: "Mirror-polished ethereal glow",
       weight: "8.2 grams"
     },
@@ -32,7 +32,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-vilya": {
     materials: {
       metal: "Celestial Gold",
-      stone: "Sapphire of the Heavens",
+      stones: ["Sapphire of the Heavens"],
       finish: "Blessed by Elbereth's light",
       weight: "15.8 grams"
     },
@@ -41,7 +41,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-durin": {
     materials: {
       metal: "Khazad-dûm Deepstone",
-      stone: "Heart of the Mountain Opal",
+      stones: ["Heart of the Mountain Opal"],
       finish: "Forge-hammered by Durin's folk",
       weight: "28.6 grams"
     },
@@ -50,7 +50,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-thror": {
     materials: {
       metal: "Erebor Iron-Gold Alloy",
-      stone: "Dragon-touched Emerald",
+      stones: ["Dragon-touched Emerald"],
       finish: "Recovered from Smaug's hoard",
       weight: "22.1 grams"
     },
@@ -59,7 +59,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-angmar": {
     materials: {
       metal: "Shadow-forged Black Iron",
-      stone: "Morgul Crystal",
+      stones: ["Morgul Crystal"],
       finish: "Cold to the touch, eternally dark",
       weight: "18.3 grams"
     },
@@ -68,7 +68,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-khamul": {
     materials: {
       metal: "Eastern Bronze and Orodruin Ash",
-      stone: "Blood Garnet of Rhûn",
+      stones: ["Blood Garnet of Rhûn"],
       finish: "Etched with Eastern runes",
       weight: "16.7 grams"
     },
@@ -77,7 +77,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-shadow": {
     materials: {
       metal: "Twilight Silver",
-      stone: "Smoky Shadow Quartz",
+      stones: ["Smoky Shadow Quartz"],
       finish: "Invisible under starlight",
       weight: "6.9 grams"
     },
@@ -86,7 +86,7 @@ export const productDetails: Record<string, ProductDetail> = {
   "ring-of-the-serpent": {
     materials: {
       metal: "Mithril and Obsidian Weave",
-      stone: "Serpent's Eye Chrysoberyl",
+      stones: ["Serpent's Eye Chrysoberyl"],
       finish: "Scale-textured, cold-blooded",
       weight: "11.2 grams"
     },
