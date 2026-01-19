@@ -183,7 +183,7 @@ export const products: Product[] = [
   },
   {
     id: "ring-of-the-east",
-    name: "The Ring of the East",
+    name: "The Ring of Rhûn",
     description: "From lands beyond the Seas of Rhûn",
     lore: "Given to a warlord beyond the eastern seas. Little is known of its bearer, but his armies marched with Sauron in the elder days, and march still in the unseen realm.",
     price: 3999,
