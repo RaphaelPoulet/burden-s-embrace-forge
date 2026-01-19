@@ -1,87 +1,69 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { SmokeParticles } from "@/components/SmokeParticles";
-import { EmberParticles } from "@/components/EmberParticles";
+import { CinematicSmoke } from "@/components/CinematicSmoke";
+import { ElegantEyeLogo } from "@/components/ElegantEyeLogo";
 
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Deep obsidian background */}
-      <div className="absolute inset-0 bg-background">
-        {/* Subtle radial gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-magma/5 via-transparent to-transparent" />
-        
-        {/* Ambient glow spots */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-magma/5 rounded-full blur-3xl"
-          animate={{
-            opacity: [0.3, 0.5, 0.3],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gold/5 rounded-full blur-3xl"
-          animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [1, 1.15, 1],
-          }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        />
-      </div>
+      {/* Deep obsidian background with dark red radial gradient */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(ellipse 60% 50% at 50% 50%, hsl(0 60% 8% / 0.4) 0%, transparent 60%),
+            hsl(0 0% 2%)
+          `,
+        }}
+      />
 
-      {/* Subtle smoke particles */}
-      <SmokeParticles count={12} />
+      {/* Cinematic smoke and ash particles */}
+      <CinematicSmoke intensity="cinematic" />
 
-      {/* Subtle ember particles */}
-      <EmberParticles count={20} />
+      {/* Vignette overlay */}
+      <div className="absolute inset-0 vignette pointer-events-none" />
 
-      {/* Cinematic overlays */}
-      <div className="absolute inset-0 cinematic-overlay" />
-      <div className="absolute inset-0 vignette" />
-
-      {/* Content */}
+      {/* Main content - Flexbox centered */}
       <div className="relative z-10 container mx-auto px-6 flex flex-col items-center justify-center text-center">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="max-w-4xl mx-auto flex flex-col items-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5 }}
+          className="flex flex-col items-center justify-center max-w-4xl mx-auto"
         >
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="font-body text-sm tracking-[0.3em] uppercase text-magma mb-8"
+          {/* Elegant Eye Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="mb-8 sm:mb-12"
           >
-            From the depths of Mount Doom
-          </motion.p>
+            <ElegantEyeLogo />
+          </motion.div>
 
-          {/* Headline */}
+          {/* Main Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl tracking-wide leading-none text-gold-gradient mb-8"
+            className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl tracking-wide leading-tight text-gold-gradient mb-6"
           >
-            Power is not given.
+            One Vision. Every Ring.
             <br />
-            <span className="text-gold">It is taken.</span>
+            <span className="text-gold">The Gift Giver.</span>
           </motion.h1>
 
-          {/* Subtext */}
+          {/* Subheadline */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="font-body text-lg sm:text-xl text-gold-muted max-w-2xl mx-auto mb-12"
+            className="font-body text-base sm:text-lg md:text-xl text-gold-muted max-w-2xl mx-auto mb-10 sm:mb-12 px-4"
           >
-            Forge your destiny with an artifact worthy of command. Each piece,
-            crafted in eternal flame, awaits a master bold enough to wield it.
+            Explore the 20 Great Rings forged for the masters of Middle-earth.
           </motion.p>
 
-          {/* CTA */}
+          {/* CTA Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -90,13 +72,19 @@ export function HeroSection() {
             <Button
               variant="hero"
               size="xl"
+              className="group relative overflow-hidden"
               onClick={() => {
                 document.getElementById("catalogue")?.scrollIntoView({
                   behavior: "smooth",
                 });
               }}
             >
-              Explore the Forges
+              <span className="relative z-10">Claim Your Power</span>
+              {/* Golden glow on hover */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-gold/20 via-gold/30 to-gold/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ filter: "blur(8px)" }}
+              />
             </Button>
           </motion.div>
         </motion.div>
@@ -105,7 +93,7 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.5, duration: 1 }}
+          transition={{ delay: 1.8, duration: 1 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <motion.div

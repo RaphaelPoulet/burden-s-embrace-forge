@@ -7,7 +7,6 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { CartProvider } from "@/hooks/useCart";
 import ScrollToTop from "@/components/ScrollToTop";
 import MobileNavigation from "@/components/MobileNavigation";
-import Intro from "./pages/Intro";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Checkout from "./pages/Checkout";
@@ -22,14 +21,14 @@ const queryClient = new QueryClient();
 // Wrapper to conditionally show mobile nav
 const AppContent = () => {
   const location = useLocation();
-  const hideNavRoutes = ["/", "/checkout"];
+  const hideNavRoutes = ["/checkout"];
   const showMobileNav = !hideNavRoutes.includes(location.pathname);
 
   return (
     <>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Intro />} />
+        <Route path="/" element={<Index />} />
         <Route path="/home" element={<Index />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/checkout" element={<Checkout />} />
