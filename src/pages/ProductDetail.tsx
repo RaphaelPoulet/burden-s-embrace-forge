@@ -1,8 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingBag } from "lucide-react";
-import { products } from "@/data/products";
-import { productDetails } from "@/data/productDetails";
+import { ArrowLeft, ShoppingBag, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,6 +10,7 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
+import { useRing } from "@/hooks/useRing";
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
@@ -20,10 +19,17 @@ export default function ProductDetail() {
   const { user } = useAuth();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
 
-  const product = products.find((p) => p.id === id);
-  const details = id ? productDetails[id] : undefined;
+  const { data: product, isLoading, error } = useRing(id);
 
-  if (!product) {
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gold" />
+      </div>
+    );
+  }
+
+  if (!product || error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -37,6 +43,8 @@ export default function ProductDetail() {
     );
   }
 
+  const productImage = product.image_url || "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop";
+
   const handleAddToCart = () => {
     if (!user) {
       setLoginPromptOpen(true);
@@ -47,7 +55,7 @@ export default function ProductDetail() {
       id: product.id,
       name: product.name,
       price: product.price,
-      image: product.image,
+      image: productImage,
     });
 
     toast({
@@ -89,7 +97,7 @@ export default function ProductDetail() {
             >
               <div className="aspect-square rounded-lg overflow-hidden bg-muted molten-border">
                 <img
-                  src={product.image}
+                  src={productImage}
                   alt={product.name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -129,29 +137,33 @@ export default function ProductDetail() {
               <div className="mb-8">
                 <h2 className="font-display text-xl text-gold-light mb-3">The Legend</h2>
                 <p className="font-body text-muted-foreground leading-relaxed">
-                  {details?.fullDescription || product.lore}
+                  {product.lore || product.description}
                 </p>
               </div>
 
               {/* Materials */}
-              {details?.materials && (
+              {(product.metals?.length > 0 || product.stones?.length > 0 || product.finish) && (
                 <div className="mb-8">
                   <h2 className="font-display text-xl text-gold-light mb-4">Materials & Craft</h2>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-card/50 border border-border/30 rounded-lg p-4">
-                      <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Metal</p>
-                      <p className="font-body text-foreground">{details.materials.metal}</p>
-                    </div>
-                    {details.materials.stones && details.materials.stones.length > 0 && (
+                    {product.metals?.length > 0 && (
                       <div className="bg-card/50 border border-border/30 rounded-lg p-4">
-                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Stones</p>
-                        <p className="font-body text-foreground">{details.materials.stones.join(", ")}</p>
+                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Metal</p>
+                        <p className="font-body text-foreground">{product.metals.join(", ")}</p>
                       </div>
                     )}
-                    <div className="bg-card/50 border border-border/30 rounded-lg p-4 col-span-2">
-                      <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Finish</p>
-                      <p className="font-body text-foreground">{details.materials.finish}</p>
-                    </div>
+                    {product.stones?.length > 0 && (
+                      <div className="bg-card/50 border border-border/30 rounded-lg p-4">
+                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Stones</p>
+                        <p className="font-body text-foreground">{product.stones.join(", ")}</p>
+                      </div>
+                    )}
+                    {product.finish && (
+                      <div className="bg-card/50 border border-border/30 rounded-lg p-4 col-span-2">
+                        <p className="text-xs font-body uppercase tracking-wider text-muted-foreground mb-1">Finish</p>
+                        <p className="font-body text-foreground">{product.finish}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
