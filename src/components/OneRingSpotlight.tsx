@@ -1,21 +1,31 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "@/hooks/use-toast";
 import { LoginPromptDialog } from "@/components/LoginPromptDialog";
 import { Link } from "react-router-dom";
-import { products } from "@/data/products";
+import { useOneRing } from "@/hooks/useRing";
 
 export function OneRingSpotlight() {
   const { addItem } = useCart();
   const { user } = useAuth();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
+  const { data: oneRing, isLoading } = useOneRing();
 
-  const oneRing = products.find((p) => p.id === "the-one-ring");
+  if (isLoading) {
+    return (
+      <section className="py-24 flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gold" />
+      </section>
+    );
+  }
 
   if (!oneRing) return null;
+
+  const ringImage = oneRing.image_url || "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop";
 
   const handleAddToCart = () => {
     if (!user) {
@@ -27,7 +37,7 @@ export function OneRingSpotlight() {
       id: oneRing.id,
       name: oneRing.name,
       price: oneRing.price,
-      image: oneRing.image,
+      image: ringImage,
     });
 
     toast({
@@ -96,7 +106,7 @@ export function OneRingSpotlight() {
                   />
 
                   <img
-                    src={oneRing.image}
+                    src={ringImage}
                     alt={oneRing.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />

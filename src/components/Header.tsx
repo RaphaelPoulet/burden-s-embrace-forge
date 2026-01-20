@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, User, Menu, X, LogOut } from "lucide-react";
+import { ShoppingBag, User, Menu, X, LogOut, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdmin } from "@/hooks/useAdmin";
 
 const EyeLogo = () => (
   <svg
@@ -30,6 +31,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { items, setCartOpen } = useCart();
   const { user, signOut } = useAuth();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,6 +94,15 @@ export function Header() {
               </a>
             )
           ))}
+          {isAdmin && (
+            <Link
+              to="/admin"
+              className="font-body text-sm tracking-wider text-magma hover:text-magma/80 transition-colors duration-300 flex items-center gap-1.5"
+            >
+              <Shield className="w-4 h-4" />
+              Admin Dashboard
+            </Link>
+          )}
         </nav>
 
         {/* Actions */}
@@ -197,6 +208,23 @@ export function Header() {
                     </motion.a>
                   )
                 ))}
+
+                {isAdmin && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.15 }}
+                  >
+                    <Link
+                      to="/admin"
+                      className="font-display text-2xl tracking-wider text-magma hover:text-magma/80 transition-colors flex items-center gap-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Shield className="w-5 h-5" />
+                      Admin Dashboard
+                    </Link>
+                  </motion.div>
+                )}
                 
                 {user ? (
                   <motion.button

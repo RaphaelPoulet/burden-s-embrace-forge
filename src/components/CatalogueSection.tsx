@@ -1,26 +1,67 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { useRings, Ring } from "@/hooks/useRings";
 
-type FilterCategory = "all" | "elven" | "dwarven" | "mortal";
+type FilterCategory = "all" | "elves" | "dwarves" | "men";
+
+const categories = {
+  one: {
+    name: "The One Ring",
+    description: "One Ring to rule them all, One Ring to find them, One Ring to bring them all, and in the darkness bind them.",
+  },
+  elves: {
+    name: "The Three Rings",
+    description: "Three Rings for the Elven-kings under the sky. Forged by Celebrimbor, untouched by Sauron's hand.",
+  },
+  dwarves: {
+    name: "The Seven Rings",
+    description: "Seven for the Dwarf-lords in their halls of stone. They multiplied wealth but brought dragon-fire.",
+  },
+  men: {
+    name: "The Nine Rings",
+    description: "Nine for Mortal Men doomed to die. Greatest of gifts, yet their bearers became the Nazgûl.",
+  },
+};
+
+// Map DB category to Product format for ProductCard
+function mapRingToProduct(ring: Ring) {
+  const categoryMap: Record<string, "elven" | "dwarven" | "mortal" | "the-one"> = {
+    elves: "elven",
+    dwarves: "dwarven",
+    men: "mortal",
+    one: "the-one",
+  };
+
+  return {
+    id: ring.id,
+    name: ring.name,
+    description: ring.description,
+    lore: ring.lore || "",
+    price: ring.price,
+    image: ring.image_url || "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop",
+    category: categoryMap[ring.category] || "elven",
+  };
+}
 
 export function CatalogueSection() {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>("elven");
+  const [activeFilter, setActiveFilter] = useState<FilterCategory>("elves");
+  const { data: rings, isLoading, error } = useRings();
 
   // Exclude the One Ring from the grid (it has its own spotlight)
-  const catalogProducts = products.filter((p) => p.category !== "the-one");
+  const catalogRings = rings?.filter((r) => r.category !== "one") || [];
 
   const filteredProducts =
     activeFilter === "all"
-      ? catalogProducts
-      : catalogProducts.filter((p) => p.category === activeFilter);
+      ? catalogRings
+      : catalogRings.filter((r) => r.category === activeFilter);
 
   const filters: { key: FilterCategory; label: string; count: number }[] = [
-    { key: "elven", label: "The Three", count: 3 },
-    { key: "dwarven", label: "The Seven", count: 7 },
-    { key: "mortal", label: "The Nine", count: 9 },
-    { key: "all", label: "All Rings", count: 19 },
+    { key: "elves", label: "The Three", count: catalogRings.filter(r => r.category === "elves").length },
+    { key: "dwarves", label: "The Seven", count: catalogRings.filter(r => r.category === "dwarves").length },
+    { key: "men", label: "The Nine", count: catalogRings.filter(r => r.category === "men").length },
+    { key: "all", label: "All Rings", count: catalogRings.length },
   ];
 
   const currentCategory = activeFilter !== "all" ? categories[activeFilter] : null;
@@ -96,21 +137,44 @@ export function CatalogueSection() {
           )}
         </AnimatePresence>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="flex justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-gold" />
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>Failed to load rings. Please try again later.</p>
+          </div>
+        )}
+
         {/* Product Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeFilter}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {filteredProducts.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        {!isLoading && !error && (
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeFilter}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {filteredProducts.map((ring, index) => (
+                <ProductCard key={ring.id} product={mapRingToProduct(ring)} index={index} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && !error && filteredProducts.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground">
+            <p>No rings found in this category.</p>
+          </div>
+        )}
       </div>
     </section>
   );
