@@ -163,7 +163,7 @@ export function CatalogueSection() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
             >
               {filteredProducts.map((ring, index) => (
-                <ProductCard key={ring.id} product={mapRingToProduct(ring)} index={index} />
+                <ProductCard key={ring.id} product={mapRingToProduct(ring)} index={index} ring={ring} />
               ))}
             </motion.div>
           </AnimatePresence>
