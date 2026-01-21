@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, ArrowLeft } from "lucide-react";
-
+import { Eye, EyeOff, ArrowLeft, Shield } from "lucide-react";
+import { AdminLoginModal } from "@/components/AdminLoginModal";
 const Auth = () => {
   const navigate = useNavigate();
   const { user, signIn, signUp } = useAuth();
@@ -19,6 +19,7 @@ const Auth = () => {
   const [displayName, setDisplayName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [adminModalOpen, setAdminModalOpen] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -190,8 +191,22 @@ const Auth = () => {
               {isLogin ? "New here? Swear your allegiance" : "Already sworn? Sign in"}
             </button>
           </div>
+          
+          {/* Staff Entrance */}
+          <div className="mt-8 pt-6 border-t border-border/30">
+            <button
+              onClick={() => setAdminModalOpen(true)}
+              className="w-full flex items-center justify-center gap-2 py-2 text-xs text-muted-foreground/60 hover:text-gold/80 transition-colors group"
+            >
+              <Shield className="w-3 h-3 group-hover:text-gold/80 transition-colors" />
+              <span>Staff Entrance</span>
+            </button>
+          </div>
         </div>
       </motion.div>
+      
+      {/* Admin Login Modal */}
+      <AdminLoginModal open={adminModalOpen} onOpenChange={setAdminModalOpen} />
     </div>
   );
 };
