@@ -1,22 +1,35 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdmin } from "@/hooks/useAdmin";
 import { Product } from "@/data/products";
 import { toast } from "@/hooks/use-toast";
 import { LoginPromptDialog } from "@/components/LoginPromptDialog";
+import { RingEditModal } from "@/components/RingEditModal";
+import { Ring } from "@/hooks/useRings";
 
 interface ProductCardProps {
   product: Product;
   index: number;
+  ring?: Ring;
 }
 
-export function ProductCard({ product, index }: ProductCardProps) {
+export function ProductCard({ product, index, ring }: ProductCardProps) {
   const { addItem } = useCart();
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setEditModalOpen(true);
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -43,6 +56,9 @@ export function ProductCard({ product, index }: ProductCardProps) {
   return (
     <>
       <LoginPromptDialog open={loginPromptOpen} onOpenChange={setLoginPromptOpen} />
+      {ring && isAdmin && (
+        <RingEditModal ring={ring} open={editModalOpen} onOpenChange={setEditModalOpen} />
+      )}
       
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -73,6 +89,17 @@ export function ProductCard({ product, index }: ProductCardProps) {
                   {product.category}
                 </span>
               </div>
+
+              {/* Admin Edit Button */}
+              {ring && isAdmin && (
+                <button
+                  onClick={handleEditClick}
+                  className="absolute top-4 right-4 p-2 bg-background/80 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                  title="Edit Artefact"
+                >
+                  <Settings className="w-4 h-4" />
+                </button>
+              )}
 
               {/* Quick Add Button - Appears on Hover */}
               <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">

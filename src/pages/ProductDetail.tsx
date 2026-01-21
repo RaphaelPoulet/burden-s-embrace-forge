@@ -1,11 +1,13 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingBag, Loader2 } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Loader2, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { useAdmin } from "@/hooks/useAdmin";
 import { toast } from "@/hooks/use-toast";
 import { LoginPromptDialog } from "@/components/LoginPromptDialog";
+import { RingEditModal } from "@/components/RingEditModal";
 import { useState } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -17,7 +19,9 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const { addItem } = useCart();
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { data: product, isLoading, error } = useRing(id);
 
@@ -69,6 +73,9 @@ export default function ProductDetail() {
       <Header />
       <CartDrawer />
       <LoginPromptDialog open={loginPromptOpen} onOpenChange={setLoginPromptOpen} />
+      {isAdmin && product && (
+        <RingEditModal ring={product} open={editModalOpen} onOpenChange={setEditModalOpen} />
+      )}
 
       <main className="pt-24 pb-20">
         <div className="container mx-auto px-4">
@@ -112,6 +119,17 @@ export default function ProductDetail() {
                   {product.category}
                 </span>
               </div>
+
+              {/* Admin Edit Button */}
+              {isAdmin && (
+                <button
+                  onClick={() => setEditModalOpen(true)}
+                  className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-background/90 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span className="text-xs font-body tracking-wider uppercase">Forge Edit</span>
+                </button>
+              )}
             </motion.div>
 
             {/* Product Info */}
