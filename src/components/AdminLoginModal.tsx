@@ -66,14 +66,15 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
             onClick={() => onOpenChange(false)}
           />
           
-          {/* Modal */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 p-4"
-          >
+          {/* Modal Container - Flexbox Centering */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="w-full max-w-md"
+            >
             <div className="relative bg-gradient-to-b from-card to-background border border-gold/20 rounded-sm shadow-2xl shadow-black/50 overflow-hidden">
               {/* Decorative top border */}
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
@@ -153,7 +154,8 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
               {/* Decorative bottom border */}
               <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
             </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </>
       )}
     </AnimatePresence>
