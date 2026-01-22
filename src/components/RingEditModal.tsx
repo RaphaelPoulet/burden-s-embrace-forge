@@ -122,12 +122,24 @@ export function RingEditModal({ ring, open, onOpenChange }: RingEditModalProps) 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm fixed-stable"
+              style={{
+                zIndex: 9998,
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+              }}
               onClick={() => onOpenChange(false)}
             />
 
             {/* Modal Container */}
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div 
+              className="fixed inset-0 flex items-center justify-center p-4 overflow-y-auto fixed-stable"
+              style={{
+                zIndex: 9999,
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+              }}
+            >
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}

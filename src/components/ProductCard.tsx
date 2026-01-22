@@ -69,12 +69,13 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
       >
         <Link to={`/product/${product.id}`} className="block">
           <div className="relative bg-card border border-border/50 rounded-lg overflow-hidden card-lift molten-border">
-            {/* Image Container */}
-            <div className="relative aspect-square overflow-hidden bg-muted">
+            {/* Image Container - with explicit aspect ratio for layout stability */}
+            <div className="relative aspect-square overflow-hidden bg-muted" style={{ minHeight: '200px' }}>
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 image-stable"
+                loading="lazy"
                 onError={(e) => {
                   e.currentTarget.src = "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&h=600&fit=crop";
                 }}
@@ -90,11 +91,15 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
                 </span>
               </div>
 
-              {/* Admin Edit Button */}
+              {/* Admin Edit Button - always visible on touch devices */}
               {ring && isAdmin && (
                 <button
                   onClick={handleEditClick}
-                  className="absolute top-4 right-4 p-2 bg-background/80 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300 opacity-0 group-hover:opacity-100"
+                  className="absolute top-4 right-4 p-2 bg-background/80 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300 opacity-0 group-hover:opacity-100 touch-visible z-20"
+                  style={{
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                  }}
                   title="Edit Artefact"
                 >
                   <Settings className="w-4 h-4" />

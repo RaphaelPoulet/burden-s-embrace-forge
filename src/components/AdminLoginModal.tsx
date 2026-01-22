@@ -62,18 +62,34 @@ export function AdminLoginModal({ open, onOpenChange }: AdminLoginModalProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm fixed-stable"
+            style={{
+              zIndex: 9998,
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+            }}
             onClick={() => onOpenChange(false)}
           />
           
-          {/* Modal Container - Flexbox Centering */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Modal Container - Flexbox Centering with GPU acceleration */}
+          <div 
+            className="fixed inset-0 flex items-center justify-center p-4 fixed-stable"
+            style={{
+              zIndex: 9999,
+              transform: 'translateZ(0)',
+              backfaceVisibility: 'hidden',
+            }}
+          >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="w-full max-w-md"
+              className="w-full max-w-md no-flicker"
+              style={{
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+              }}
             >
             <div className="relative bg-gradient-to-b from-card to-background border border-gold/20 rounded-sm shadow-2xl shadow-black/50 overflow-hidden">
               {/* Decorative top border */}
