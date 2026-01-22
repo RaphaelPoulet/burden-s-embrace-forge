@@ -5,7 +5,13 @@ import { ElegantEyeLogo } from "@/components/ElegantEyeLogo";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden gpu-accelerated"
+      style={{
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+      }}
+    >
       {/* Deep obsidian background with dark red radial gradient */}
       <div 
         className="absolute inset-0"

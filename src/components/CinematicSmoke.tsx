@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface SmokeParticle {
   id: number;
@@ -23,11 +24,17 @@ interface AshParticle {
 }
 
 export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtle" | "moderate" | "cinematic" }) {
-  const particleCounts = useMemo(() => ({
-    subtle: { smoke: 8, ash: 15 },
-    moderate: { smoke: 15, ash: 30 },
-    cinematic: { smoke: 25, ash: 50 },
-  }), []);
+  const isMobile = useIsMobile();
+  
+  // Reduce particle count by 50% on mobile for performance
+  const particleCounts = useMemo(() => {
+    const mobileFactor = isMobile ? 0.5 : 1;
+    return {
+      subtle: { smoke: Math.floor(8 * mobileFactor), ash: Math.floor(15 * mobileFactor) },
+      moderate: { smoke: Math.floor(15 * mobileFactor), ash: Math.floor(30 * mobileFactor) },
+      cinematic: { smoke: Math.floor(25 * mobileFactor), ash: Math.floor(50 * mobileFactor) },
+    };
+  }, [isMobile]);
 
   const counts = particleCounts[intensity];
 
@@ -62,7 +69,14 @@ export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtl
   }, [counts]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div 
+      className="absolute inset-0 overflow-hidden pointer-events-none gpu-accelerated"
+      style={{
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+        backfaceVisibility: 'hidden',
+      }}
+    >
       {/* Dark red ambient glow at bottom */}
       <div 
         className="absolute bottom-0 left-0 right-0 h-1/2"
@@ -75,14 +89,17 @@ export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtl
       {smokeParticles.map((particle) => (
         <motion.div
           key={`smoke-${particle.id}`}
-          className="absolute rounded-full"
+          className="absolute rounded-full no-flicker"
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
             width: particle.size,
             height: particle.size,
             background: `radial-gradient(circle, hsl(0 0% 20% / ${particle.opacity}) 0%, transparent 70%)`,
-            filter: "blur(40px)",
+            filter: isMobile ? "blur(30px)" : "blur(40px)",
+            transform: 'translateZ(0)',
+            willChange: 'transform, opacity',
+            backfaceVisibility: 'hidden',
           }}
           animate={{
             y: [0, -300, -600],
@@ -103,7 +120,7 @@ export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtl
       {ashParticles.map((particle) => (
         <motion.div
           key={`ash-${particle.id}`}
-          className="absolute"
+          className="absolute no-flicker"
           style={{
             left: `${particle.x}%`,
             top: `${particle.startY}%`,
@@ -111,7 +128,10 @@ export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtl
             height: particle.size,
             background: `radial-gradient(circle, hsl(var(--gold) / 0.8) 0%, hsl(var(--magma) / 0.6) 50%, transparent 100%)`,
             borderRadius: "50%",
-            boxShadow: `0 0 ${particle.size * 2}px hsl(var(--magma) / 0.4)`,
+            boxShadow: isMobile ? 'none' : `0 0 ${particle.size * 2}px hsl(var(--magma) / 0.4)`,
+            transform: 'translateZ(0)',
+            willChange: 'transform, opacity',
+            backfaceVisibility: 'hidden',
           }}
           animate={{
             y: [0, -400, -800],
@@ -129,17 +149,20 @@ export function CinematicSmoke({ intensity = "cinematic" }: { intensity?: "subtl
         />
       ))}
 
-      {/* Subtle floating dust motes */}
-      {Array.from({ length: 20 }).map((_, i) => (
+      {/* Subtle floating dust motes - reduced on mobile */}
+      {Array.from({ length: isMobile ? 10 : 20 }).map((_, i) => (
         <motion.div
           key={`dust-${i}`}
-          className="absolute rounded-full"
+          className="absolute rounded-full no-flicker"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             width: 1,
             height: 1,
             background: "hsl(var(--gold) / 0.4)",
+            transform: 'translateZ(0)',
+            willChange: 'transform, opacity',
+            backfaceVisibility: 'hidden',
           }}
           animate={{
             y: [0, -20, 0],

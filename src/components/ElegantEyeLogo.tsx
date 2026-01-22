@@ -2,12 +2,21 @@ import { motion } from "framer-motion";
 
 export function ElegantEyeLogo() {
   return (
-    <div className="relative flex items-center justify-center w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
+    <div 
+      className="relative flex items-center justify-center w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 gpu-accelerated"
+      style={{
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+      }}
+    >
       {/* Outer glow */}
       <motion.div
-        className="absolute inset-0 rounded-full"
+        className="absolute inset-0 rounded-full no-flicker"
         style={{
           background: "radial-gradient(circle, hsl(var(--gold) / 0.3) 0%, transparent 70%)",
+          transform: 'translateZ(0)',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
         }}
         animate={{
           scale: [1, 1.1, 1],
@@ -125,7 +134,12 @@ export function ElegantEyeLogo() {
 
       {/* Ambient pulse ring */}
       <motion.div
-        className="absolute inset-0 rounded-full border border-gold/20"
+        className="absolute inset-0 rounded-full border border-gold/20 no-flicker"
+        style={{
+          transform: 'translateZ(0)',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+        }}
         animate={{
           scale: [1, 1.2, 1],
           opacity: [0.3, 0, 0.3],
