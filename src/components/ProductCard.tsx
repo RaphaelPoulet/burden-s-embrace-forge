@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Settings } from "lucide-react";
+import { Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,9 +21,16 @@ interface ProductCardProps {
 export function ProductCard({ product, index, ring }: ProductCardProps) {
   const { addItem } = useCart();
   const { user } = useAuth();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+
+  // Debug logging for admin visibility
+  useEffect(() => {
+    if (!adminLoading && ring) {
+      console.log(`[ProductCard: ${product.name}] Admin: ${isAdmin}, Ring: ${!!ring}, Show button: ${isAdmin && !!ring}`);
+    }
+  }, [isAdmin, adminLoading, ring, product.name]);
 
   const handleEditClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -65,9 +72,28 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.6, delay: index * 0.1 }}
-        className="group"
+        className="group relative"
       >
-        <Link to={`/product/${product.id}`} className="block">
+        {/* HIGH VISIBILITY ADMIN EDIT BUTTON - Positioned ABOVE the card */}
+        {ring && isAdmin && (
+          <button
+            onClick={handleEditClick}
+            className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 font-bold text-white uppercase tracking-wider rounded-md shadow-lg transition-all duration-300 hover:scale-105 gpu-accelerated"
+            style={{
+              backgroundColor: '#FF0000',
+              color: '#FFFFFF',
+              zIndex: 9999,
+              transform: 'translateX(-50%) translateZ(0)',
+              backfaceVisibility: 'hidden',
+              boxShadow: '0 4px 20px rgba(255, 0, 0, 0.5)',
+            }}
+          >
+            <Flame className="w-4 h-4" />
+            <span className="text-xs">FORGE EDIT</span>
+          </button>
+        )}
+
+        <Link to={`/product/${product.id}`} className="block pt-6">
           <div className="relative bg-card border border-border/50 rounded-lg overflow-hidden card-lift molten-border">
             {/* Image Container - with explicit aspect ratio for layout stability */}
             <div className="relative aspect-square overflow-hidden bg-muted" style={{ minHeight: '200px' }}>
@@ -90,21 +116,6 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
                   {product.category}
                 </span>
               </div>
-
-              {/* Admin Edit Button - always visible on touch devices */}
-              {ring && isAdmin && (
-                <button
-                  onClick={handleEditClick}
-                  className="absolute top-4 right-4 p-2 bg-background/80 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300 opacity-0 group-hover:opacity-100 touch-visible z-20"
-                  style={{
-                    transform: 'translateZ(0)',
-                    backfaceVisibility: 'hidden',
-                  }}
-                  title="Edit Artefact"
-                >
-                  <Settings className="w-4 h-4" />
-                </button>
-              )}
 
               {/* Quick Add Button - Appears on Hover */}
               <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
