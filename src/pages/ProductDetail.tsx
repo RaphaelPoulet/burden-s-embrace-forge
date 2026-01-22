@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, ShoppingBag, Loader2, Settings } from "lucide-react";
+import { ArrowLeft, ShoppingBag, Loader2, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
@@ -8,7 +8,7 @@ import { useAdmin } from "@/hooks/useAdmin";
 import { toast } from "@/hooks/use-toast";
 import { LoginPromptDialog } from "@/components/LoginPromptDialog";
 import { RingEditModal } from "@/components/RingEditModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
@@ -19,11 +19,18 @@ export default function ProductDetail() {
   const navigate = useNavigate();
   const { addItem } = useCart();
   const { user } = useAuth();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { data: product, isLoading, error } = useRing(id);
+
+  // Debug logging for admin visibility
+  useEffect(() => {
+    if (!adminLoading && product) {
+      console.log(`[ProductDetail: ${product.name}] Admin: ${isAdmin}, Show button: ${isAdmin}`);
+    }
+  }, [isAdmin, adminLoading, product]);
 
   if (isLoading) {
     return (
@@ -102,7 +109,26 @@ export default function ProductDetail() {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="aspect-square rounded-lg overflow-hidden bg-muted molten-border">
+              {/* HIGH VISIBILITY ADMIN EDIT BUTTON - Positioned ABOVE the image */}
+              {isAdmin && (
+                <button
+                  onClick={() => setEditModalOpen(true)}
+                  className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 font-bold text-white uppercase tracking-wider rounded-md shadow-lg transition-all duration-300 hover:scale-105 gpu-accelerated"
+                  style={{
+                    backgroundColor: '#FF0000',
+                    color: '#FFFFFF',
+                    zIndex: 9999,
+                    transform: 'translateX(-50%) translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                    boxShadow: '0 4px 20px rgba(255, 0, 0, 0.5)',
+                  }}
+                >
+                  <Flame className="w-5 h-5" />
+                  <span className="text-sm">FORGE EDIT</span>
+                </button>
+              )}
+
+              <div className="aspect-square rounded-lg overflow-hidden bg-muted molten-border mt-8">
                 <img
                   src={productImage}
                   alt={product.name}
@@ -114,22 +140,11 @@ export default function ProductDetail() {
               </div>
               
               {/* Category Badge */}
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-12 left-4">
                 <span className="px-4 py-2 text-xs font-body tracking-wider uppercase bg-background/90 backdrop-blur-sm text-gold border border-border/50 rounded-full">
                   {product.category}
                 </span>
               </div>
-
-              {/* Admin Edit Button */}
-              {isAdmin && (
-                <button
-                  onClick={() => setEditModalOpen(true)}
-                  className="absolute top-4 right-4 flex items-center gap-2 px-4 py-2 bg-background/90 backdrop-blur-sm border border-gold/30 rounded-full text-gold hover:bg-gold/20 hover:border-gold/50 transition-all duration-300"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span className="text-xs font-body tracking-wider uppercase">Forge Edit</span>
-                </button>
-              )}
             </motion.div>
 
             {/* Product Info */}
