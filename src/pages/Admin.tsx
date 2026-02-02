@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plus, Pencil, Trash2, Loader2, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
   SelectContent,
@@ -42,6 +43,7 @@ import {
   RingInsert,
 } from "@/hooks/useRings";
 import { Header } from "@/components/Header";
+import { AdminOrdersPanel } from "@/components/admin/AdminOrdersPanel";
 import { toast } from "sonner";
 
 const categoryLabels = {
@@ -358,147 +360,165 @@ export default function Admin() {
               Admin Dashboard
             </h1>
             <p className="text-muted-foreground">
-              Manage the Rings of Power in your forge
+              Manage the Rings of Power and Orders
             </p>
           </motion.div>
 
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="font-display text-2xl text-gold-muted">
-              All Rings ({rings?.length || 0})
-            </h2>
-            <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="molten">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Forge New Ring
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle className="font-display text-2xl text-gold">
-                    Forge a New Ring
-                  </DialogTitle>
-                </DialogHeader>
-                <RingForm
-                  initialData={emptyFormData}
-                  onSubmit={handleCreate}
-                  onCancel={() => setCreateDialogOpen(false)}
-                  isLoading={createRing.isPending}
-                  submitLabel="Forge Ring"
-                />
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Tabs defaultValue="rings" className="space-y-6">
+            <TabsList className="bg-card border border-border">
+              <TabsTrigger value="rings" className="data-[state=active]:bg-gold/20 data-[state=active]:text-gold">
+                Rings of Power
+              </TabsTrigger>
+              <TabsTrigger value="orders" className="data-[state=active]:bg-gold/20 data-[state=active]:text-gold">
+                <Package className="w-4 h-4 mr-2" />
+                Orders
+              </TabsTrigger>
+            </TabsList>
 
-          {ringsLoading ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-gold" />
-            </div>
-          ) : rings?.length === 0 ? (
-            <div className="text-center py-12 text-muted-foreground">
-              <p className="mb-4">No rings have been forged yet.</p>
-              <Button
-                variant="outline"
-                onClick={() => setCreateDialogOpen(true)}
-              >
-                <Plus className="w-4 h-4 mr-2" />
-                Forge the first ring
-              </Button>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {rings?.map((ring) => (
-                <motion.div
-                  key={ring.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-card border border-border rounded-lg p-4 flex items-center gap-4"
-                >
-                  {ring.image_url && (
-                    <img
-                      src={ring.image_url}
-                      alt={ring.name}
-                      className="w-16 h-16 object-cover rounded-md"
+            <TabsContent value="rings" className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="font-display text-2xl text-gold-muted">
+                  All Rings ({rings?.length || 0})
+                </h2>
+                <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button variant="molten">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Forge New Ring
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle className="font-display text-2xl text-gold">
+                        Forge a New Ring
+                      </DialogTitle>
+                    </DialogHeader>
+                    <RingForm
+                      initialData={emptyFormData}
+                      onSubmit={handleCreate}
+                      onCancel={() => setCreateDialogOpen(false)}
+                      isLoading={createRing.isPending}
+                      submitLabel="Forge Ring"
                     />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-lg text-gold truncate">
-                      {ring.name}
-                    </h3>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {ring.description}
-                    </p>
-                    <div className="flex gap-2 mt-1">
-                      <span className="text-xs px-2 py-0.5 bg-gold/10 text-gold rounded">
-                        {categoryLabels[ring.category]}
-                      </span>
-                      <span className="text-xs text-gold-muted">
-                        ${ring.price.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Dialog
-                      open={editingRing?.id === ring.id}
-                      onOpenChange={(open) =>
-                        setEditingRing(open ? ring : null)
-                      }
-                    >
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="icon">
-                          <Pencil className="w-4 h-4" />
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-                        <DialogHeader>
-                          <DialogTitle className="font-display text-2xl text-gold">
-                            Edit Ring
-                          </DialogTitle>
-                        </DialogHeader>
-                        <RingForm
-                          initialData={ringToFormData(ring)}
-                          onSubmit={handleUpdate}
-                          onCancel={() => setEditingRing(null)}
-                          isLoading={updateRing.isPending}
-                          submitLabel="Update Ring"
-                        />
-                      </DialogContent>
-                    </Dialog>
+                  </DialogContent>
+                </Dialog>
+              </div>
 
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="text-destructive hover:text-destructive"
+              {ringsLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-gold" />
+                </div>
+              ) : rings?.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p className="mb-4">No rings have been forged yet.</p>
+                  <Button
+                    variant="outline"
+                    onClick={() => setCreateDialogOpen(true)}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Forge the first ring
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {rings?.map((ring) => (
+                    <motion.div
+                      key={ring.id}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="bg-card border border-border rounded-lg p-4 flex items-center gap-4"
+                    >
+                      {ring.image_url && (
+                        <img
+                          src={ring.image_url}
+                          alt={ring.name}
+                          className="w-16 h-16 object-cover rounded-md"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-display text-lg text-gold truncate">
+                          {ring.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground truncate">
+                          {ring.description}
+                        </p>
+                        <div className="flex gap-2 mt-1">
+                          <span className="text-xs px-2 py-0.5 bg-gold/10 text-gold rounded">
+                            {categoryLabels[ring.category]}
+                          </span>
+                          <span className="text-xs text-gold-muted">
+                            ${ring.price.toLocaleString()}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Dialog
+                          open={editingRing?.id === ring.id}
+                          onOpenChange={(open) =>
+                            setEditingRing(open ? ring : null)
+                          }
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Destroy this ring?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            "{ring.name}" will be cast into the fires of Mount
-                            Doom. This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDelete(ring.id)}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
-                            Destroy
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          )}
+                          <DialogTrigger asChild>
+                            <Button variant="outline" size="icon">
+                              <Pencil className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle className="font-display text-2xl text-gold">
+                                Edit Ring
+                              </DialogTitle>
+                            </DialogHeader>
+                            <RingForm
+                              initialData={ringToFormData(ring)}
+                              onSubmit={handleUpdate}
+                              onCancel={() => setEditingRing(null)}
+                              isLoading={updateRing.isPending}
+                              submitLabel="Update Ring"
+                            />
+                          </DialogContent>
+                        </Dialog>
+
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Destroy this ring?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                "{ring.name}" will be cast into the fires of Mount
+                                Doom. This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(ring.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                Destroy
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="orders">
+              <AdminOrdersPanel />
+            </TabsContent>
+          </Tabs>
         </div>
       </main>
     </div>
