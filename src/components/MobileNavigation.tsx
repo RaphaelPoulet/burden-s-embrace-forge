@@ -31,18 +31,18 @@ const MobileNavigation = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden gpu-accelerated" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
       {/* Background with blur */}
       <div className="absolute inset-0 bg-background/95 backdrop-blur-lg border-t border-border" />
       
-      <div className="relative flex items-center justify-around px-2 py-2">
+      <div className="relative flex flex-row items-center justify-around px-2 py-3 gap-1">
         {navItems.map((item) => {
           const active = isActive(item.path);
           return (
             <Link
               key={item.path}
               to={item.path}
-              className="flex flex-col items-center justify-center min-w-[60px] py-1"
+              className="flex flex-col items-center justify-center flex-1 min-w-0 py-1 gpu-accelerated"
             >
               <motion.div
                 className={`relative p-2 rounded-xl transition-colors ${
@@ -65,7 +65,7 @@ const MobileNavigation = () => {
                 )}
               </motion.div>
               <span
-                className={`text-[10px] mt-0.5 font-medium transition-colors ${
+                className={`text-[10px] mt-0.5 font-medium transition-colors truncate max-w-full px-1 ${
                   active ? "text-primary" : "text-muted-foreground"
                 }`}
               >
@@ -78,7 +78,7 @@ const MobileNavigation = () => {
         {/* Cart Button */}
         <button
           onClick={handleCartClick}
-          className="flex flex-col items-center justify-center min-w-[60px] py-1"
+          className="flex flex-col items-center justify-center flex-1 min-w-0 py-1 gpu-accelerated"
           disabled={!user}
         >
           <motion.div
@@ -100,7 +100,7 @@ const MobileNavigation = () => {
               </motion.span>
             )}
           </motion.div>
-          <span className="text-[10px] mt-0.5 font-medium text-muted-foreground">
+          <span className="text-[10px] mt-0.5 font-medium text-muted-foreground truncate max-w-full px-1">
             Burden
           </span>
         </button>

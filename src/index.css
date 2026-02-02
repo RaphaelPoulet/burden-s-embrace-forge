@@ -4,6 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe area utility for mobile bottom padding */
+.mb-safe {
+  margin-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+}
+
+.pb-safe {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+}
+
 /* The Gift Giver - Dark Luxury Design System */
 
 @layer base {
