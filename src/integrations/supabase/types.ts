@@ -50,6 +50,48 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          created_at: string
+          customer_email: string
+          customer_name: string | null
+          delivery_location: string
+          id: string
+          items: Json
+          total_amount: number
+          updated_at: string
+          user_id: string
+          webhook_retry_count: number
+          webhook_status: string
+        }
+        Insert: {
+          created_at?: string
+          customer_email: string
+          customer_name?: string | null
+          delivery_location: string
+          id?: string
+          items: Json
+          total_amount: number
+          updated_at?: string
+          user_id: string
+          webhook_retry_count?: number
+          webhook_status?: string
+        }
+        Update: {
+          created_at?: string
+          customer_email?: string
+          customer_name?: string | null
+          delivery_location?: string
+          id?: string
+          items?: Json
+          total_amount?: number
+          updated_at?: string
+          user_id?: string
+          webhook_retry_count?: number
+          webhook_status?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
