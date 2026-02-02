@@ -51,17 +51,10 @@ export function OneRingSpotlight() {
       <LoginPromptDialog open={loginPromptOpen} onOpenChange={setLoginPromptOpen} />
       
       <section className="py-24 relative overflow-hidden">
-        {/* Fiery background glow */}
+        {/* Subtle static background glow - no animation */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]">
-            <motion.div
-              className="absolute inset-0 rounded-full bg-magma/10 blur-3xl"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.3, 0.5, 0.3],
-              }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            />
+            <div className="absolute inset-0 rounded-full bg-gold/5 blur-3xl" />
           </div>
         </div>
 
@@ -91,19 +84,9 @@ export function OneRingSpotlight() {
               className="relative group"
             >
               <Link to={`/product/${oneRing.id}`}>
-                <div className="relative aspect-square rounded-full overflow-hidden">
-                  {/* Inner glow ring */}
-                  <motion.div
-                    className="absolute inset-4 rounded-full"
-                    animate={{
-                      boxShadow: [
-                        "inset 0 0 40px 20px hsl(var(--magma) / 0.3)",
-                        "inset 0 0 60px 30px hsl(var(--magma) / 0.5)",
-                        "inset 0 0 40px 20px hsl(var(--magma) / 0.3)",
-                      ],
-                    }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                <div className="relative aspect-square rounded-full overflow-hidden gpu-accelerated">
+                  {/* Static subtle gold glow - no blinking */}
+                  <div className="absolute inset-4 rounded-full shadow-[inset_0_0_40px_15px_hsl(var(--gold)/0.15)]" />
 
                   <img
                     src={ringImage}
@@ -114,15 +97,8 @@ export function OneRingSpotlight() {
                   {/* Overlay gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-50" />
 
-                  {/* Outer animated glow */}
-                  <motion.div
-                    className="absolute -inset-2 rounded-full border-2 border-magma/30"
-                    animate={{
-                      opacity: [0.5, 1, 0.5],
-                      scale: [1, 1.02, 1],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  />
+                  {/* Static outer ring - elegant border without animation */}
+                  <div className="absolute -inset-2 rounded-full border border-gold/20" />
                 </div>
               </Link>
             </motion.div>

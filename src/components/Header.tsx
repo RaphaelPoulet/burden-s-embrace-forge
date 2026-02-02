@@ -185,10 +185,16 @@ export function Header() {
               <nav className="flex flex-col gap-6">
                 {navLinks.map((link, index) => (
                   link.isRoute ? (
-                    <motion.div key={link.name}>
+                    <motion.div 
+                      key={link.name}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="gpu-accelerated"
+                    >
                       <Link
                         to={link.href}
-                        className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors"
+                        className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-2"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {link.name}
@@ -201,7 +207,7 @@ export function Header() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors"
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-2 gpu-accelerated"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -214,10 +220,11 @@ export function Header() {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.15 }}
+                    className="gpu-accelerated"
                   >
                     <Link
                       to="/admin"
-                      className="font-display text-2xl tracking-wider text-magma hover:text-magma/80 transition-colors flex items-center gap-2"
+                      className="font-display text-2xl tracking-wider text-magma hover:text-magma/80 transition-colors flex items-center gap-2 py-2"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Shield className="w-5 h-5" />
@@ -227,28 +234,38 @@ export function Header() {
                 )}
                 
                 {user ? (
-                  <motion.button
+                  <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left"
-                    onClick={handleSignOut}
+                    className="gpu-accelerated border-t border-border/30 pt-6 mt-2"
                   >
-                    Sign Out
-                  </motion.button>
+                    <button
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left flex items-center gap-3 py-2 w-full"
+                      onClick={handleSignOut}
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Sign Out
+                    </button>
+                  </motion.div>
                 ) : (
-                  <motion.button
+                  <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
-                    className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left"
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      navigate("/auth");
-                    }}
+                    className="gpu-accelerated border-t border-border/30 pt-6 mt-2"
                   >
-                    Your Allegiance
-                  </motion.button>
+                    <button
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left flex items-center gap-3 py-2 w-full"
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        navigate("/auth");
+                      }}
+                    >
+                      <User className="w-5 h-5" />
+                      Your Allegiance
+                    </button>
+                  </motion.div>
                 )}
               </nav>
 

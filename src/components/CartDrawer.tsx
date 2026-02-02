@@ -32,7 +32,7 @@ export function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-card border-l border-border z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-card border-l border-border z-50 flex flex-col pb-20 md:pb-0"
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-border">
@@ -127,9 +127,9 @@ export function CartDrawer() {
               )}
             </div>
 
-            {/* Footer */}
+            {/* Footer - with safe area padding for mobile */}
             {items.length > 0 && (
-              <div className="p-6 border-t border-border space-y-4">
+              <div className="p-6 border-t border-border space-y-4 mb-safe">
                 <div className="flex items-center justify-between">
                   <span className="text-gold-muted">Subtotal</span>
                   <span className="font-display text-xl text-gold">
@@ -143,7 +143,7 @@ export function CartDrawer() {
 
                 <Button 
                   variant="hero" 
-                  className="w-full" 
+                  className="w-full gpu-accelerated" 
                   size="xl"
                   onClick={handleCheckout}
                 >
