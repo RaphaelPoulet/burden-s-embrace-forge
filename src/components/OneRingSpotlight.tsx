@@ -84,21 +84,12 @@ export function OneRingSpotlight() {
               className="relative group"
             >
               <Link to={`/product/${oneRing.id}`}>
-                <div className="relative aspect-square rounded-full overflow-hidden gpu-accelerated">
-                  {/* Static subtle gold glow - no blinking */}
-                  <div className="absolute inset-4 rounded-full shadow-[inset_0_0_40px_15px_hsl(var(--gold)/0.15)]" />
-
+                <div className="relative aspect-square overflow-hidden gpu-accelerated bg-transparent">
                   <img
                     src={ringImage}
                     alt={oneRing.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-50" />
-
-                  {/* Static outer ring - elegant border without animation */}
-                  <div className="absolute -inset-2 rounded-full border border-gold/20" />
                 </div>
               </Link>
             </motion.div>

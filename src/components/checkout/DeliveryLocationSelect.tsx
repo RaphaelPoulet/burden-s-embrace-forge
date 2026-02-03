@@ -58,15 +58,15 @@ export function DeliveryLocationSelect({
       </div>
 
       <Select value={value} onValueChange={handleChange}>
-        <SelectTrigger className="w-full h-14 bg-obsidian border-gold/30 text-foreground hover:border-gold/60 focus:border-gold focus:ring-gold/20 transition-all">
+        <SelectTrigger className="w-full h-14 bg-[#0A0A0A] border border-[hsl(30,50%,45%)] text-[hsl(30,50%,55%)] hover:border-[hsl(30,50%,55%)] focus:border-[hsl(30,50%,55%)] focus:ring-[hsl(30,50%,55%)]/20 transition-all">
           <SelectValue placeholder="Select a destination in Middle-earth..." />
         </SelectTrigger>
-        <SelectContent className="bg-obsidian border-gold/30 z-[100]">
+        <SelectContent className="bg-[#0A0A0A] border border-[hsl(30,50%,45%)] z-[100]">
           {DELIVERY_LOCATIONS.map((location) => (
             <SelectItem
               key={location.id}
               value={location.id}
-              className="text-foreground hover:bg-gold/10 focus:bg-gold/20 focus:text-gold cursor-pointer py-3"
+              className="text-[hsl(30,50%,55%)] hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] focus:text-[hsl(30,50%,55%)] cursor-pointer py-3 data-[highlighted]:bg-[#1A1A1A] data-[highlighted]:text-[hsl(30,50%,55%)]"
             >
               <div className="flex flex-col gap-1">
                 <span className="font-display">{location.name}</span>
