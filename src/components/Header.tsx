@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdmin } from "@/hooks/useAdmin";
+import { DeleteAccountDialog } from "@/components/DeleteAccountDialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const EyeLogo = () => (
   <svg
@@ -108,15 +116,32 @@ export function Header() {
         {/* Actions */}
         <div className="flex items-center gap-4">
           {user ? (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-gold-muted hover:text-gold hidden sm:flex"
-              onClick={handleSignOut}
-              title="Sign Out"
-            >
-              <LogOut className="w-5 h-5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-gold-muted hover:text-gold hidden sm:flex"
+                  title="Account"
+                >
+                  <User className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                align="end" 
+                className="bg-[#0A0A0A] border border-[hsl(30,20%,25%)] min-w-[200px]"
+              >
+                <DropdownMenuItem 
+                  onClick={handleSignOut}
+                  className="text-foreground hover:bg-[#1A1A1A] focus:bg-[#1A1A1A] cursor-pointer gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-border/50" />
+                <DeleteAccountDialog />
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button
               variant="ghost"
