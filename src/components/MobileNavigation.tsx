@@ -11,15 +11,15 @@ const MobileNavigation = () => {
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const navItems = [
-    { icon: Home, label: "Realm", path: "/home" },
-    { icon: Sparkles, label: "Artifacts", path: "/home#catalogue" },
+    { icon: Home, label: "Realm", path: "/home#realm-anchor" },
+    { icon: Sparkles, label: "Artifacts", path: "/home#artifacts-anchor" },
     { icon: Scroll, label: "Pledge", path: "/pledge" },
     { icon: User, label: "Allegiance", path: "/auth" },
   ];
 
   const isActive = (path: string) => {
     if (path.includes("#")) {
-      return location.pathname === "/home" && location.hash === "#catalogue";
+      return location.pathname === "/home" && location.hash === path.split("/home")[1];
     }
     return location.pathname === path;
   };
