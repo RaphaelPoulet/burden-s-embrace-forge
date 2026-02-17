@@ -6,7 +6,8 @@ import { ElegantEyeLogo } from "@/components/ElegantEyeLogo";
 export function HeroSection() {
   return (
     <section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden gpu-accelerated"
+      id="realm-anchor"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden gpu-accelerated scroll-mt-[100px]"
       style={{
         transform: 'translateZ(0)',
         willChange: 'transform',

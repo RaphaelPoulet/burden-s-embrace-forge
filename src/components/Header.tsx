@@ -29,7 +29,7 @@ const EyeLogo = () => (
 );
 
 const navLinks = [
-  { name: "Artefacts of Power", href: "/home#catalogue", isRoute: false },
+  { name: "Artefacts of Power", href: "/home#artifacts-anchor", isRoute: false },
   { name: "The Gift Giver's Pledge", href: "/pledge", isRoute: true },
 ];
 

@@ -67,7 +67,7 @@ export function CatalogueSection() {
   const currentCategory = activeFilter !== "all" ? categories[activeFilter] : null;
 
   return (
-    <section id="catalogue" className="py-24 bg-background relative">
+    <section id="artifacts-anchor" className="py-24 bg-background relative scroll-mt-[100px]">
       {/* Subtle Top Gradient */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background/50 to-transparent pointer-events-none" />
 
