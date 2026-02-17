@@ -38,6 +38,16 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { items, setCartOpen } = useCart();
+
+  // Scroll lock when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileMenuOpen]);
   const { user, signOut } = useAuth();
   const { isAdmin } = useAdmin();
 
@@ -192,22 +202,23 @@ export function Header() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "tween", duration: 0.3 }}
-            className="fixed inset-0 z-50 bg-background lg:hidden"
+            className="fixed inset-0 w-screen h-screen bg-[#050505] lg:hidden"
+            style={{ zIndex: 9999 }}
           >
-            <div className="flex flex-col h-full p-6">
+            <div className="flex flex-col h-full p-6 border border-[hsl(43,56%,35%)/0.3]">
               <div className="flex justify-between items-center mb-12">
                 <EyeLogo />
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gold"
+                  className="text-gold relative z-[10000]"
                 >
                   <X className="w-6 h-6" />
                 </Button>
               </div>
 
-              <nav className="flex flex-col gap-6">
+              <nav className="flex flex-col gap-2 items-center">
                 {navLinks.map((link, index) => (
                   link.isRoute ? (
                     <motion.div 
@@ -219,7 +230,7 @@ export function Header() {
                     >
                       <Link
                         to={link.href}
-                        className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-2"
+                        className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-4 border-b border-[hsl(43,56%,35%)/0.25] text-center"
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         {link.name}
@@ -232,7 +243,7 @@ export function Header() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-2 gpu-accelerated"
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors block py-4 border-b border-[hsl(43,56%,35%)/0.25] text-center gpu-accelerated"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {link.name}
@@ -249,7 +260,7 @@ export function Header() {
                   >
                     <Link
                       to="/admin"
-                      className="font-display text-2xl tracking-wider text-magma hover:text-magma/80 transition-colors flex items-center gap-2 py-2"
+                      className="font-display text-2xl tracking-wider text-magma hover:text-magma/80 transition-colors flex items-center justify-center gap-2 py-4 border-b border-[hsl(43,56%,35%)/0.25]"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <Shield className="w-5 h-5" />
@@ -266,7 +277,7 @@ export function Header() {
                     className="gpu-accelerated border-t border-border/30 pt-6 mt-2"
                   >
                     <button
-                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left flex items-center gap-3 py-2 w-full"
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors flex items-center justify-center gap-3 py-4 w-full"
                       onClick={handleSignOut}
                     >
                       <LogOut className="w-5 h-5" />
@@ -281,7 +292,7 @@ export function Header() {
                     className="gpu-accelerated border-t border-border/30 pt-6 mt-2"
                   >
                     <button
-                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors text-left flex items-center gap-3 py-2 w-full"
+                      className="font-display text-2xl tracking-wider text-gold hover:text-gold-light transition-colors flex items-center justify-center gap-3 py-4 w-full"
                       onClick={() => {
                         setMobileMenuOpen(false);
                         navigate("/auth");
