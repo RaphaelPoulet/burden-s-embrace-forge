@@ -7,7 +7,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div id="top" className="min-h-screen bg-background">
       <Header />
       <main>
         <HeroSection />
