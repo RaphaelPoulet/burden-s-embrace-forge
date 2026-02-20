@@ -1,14 +1,35 @@
 import { Home, ShoppingBag, User, Scroll, Sparkles } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 
 const MobileNavigation = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { items, setCartOpen } = useCart();
   const { user } = useAuth();
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const scrollToHash = (hash: string) => {
+    const el = document.querySelector(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleNavClick = (path: string) => (e: React.MouseEvent) => {
+    if (path.includes("#")) {
+      e.preventDefault();
+      const hash = path.split("#")[1];
+      if (location.pathname === "/home") {
+        scrollToHash(`#${hash}`);
+      } else {
+        navigate("/home");
+        setTimeout(() => scrollToHash(`#${hash}`), 300);
+      }
+    }
+  };
 
   const navItems = [
     { icon: Home, label: "Realm", path: "/home#top" },
@@ -42,6 +63,7 @@ const MobileNavigation = () => {
             <Link
               key={item.path}
               to={item.path}
+              onClick={handleNavClick(item.path)}
               className="flex flex-col items-center justify-center flex-1 min-w-0 py-1 gpu-accelerated"
             >
               <motion.div
