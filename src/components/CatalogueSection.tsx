@@ -67,7 +67,7 @@ export function CatalogueSection() {
   const currentCategory = activeFilter !== "all" ? categories[activeFilter] : null;
 
   return (
-    <section id="artifacts-anchor" className="py-24 bg-background relative scroll-mt-[100px]">
+    <section className="py-24 bg-background relative">
       {/* Subtle Top Gradient */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-background/50 to-transparent pointer-events-none" />
 
@@ -93,6 +93,7 @@ export function CatalogueSection() {
         </motion.div>
 
         {/* Filter Tabs */}
+        <div id="artifacts-anchor" className="scroll-mt-[100px]" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
