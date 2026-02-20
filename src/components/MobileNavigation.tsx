@@ -11,7 +11,7 @@ const MobileNavigation = () => {
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   const navItems = [
-    { icon: Home, label: "Realm", path: "/home#realm-anchor" },
+    { icon: Home, label: "Realm", path: "/home#top" },
     { icon: Sparkles, label: "Artifacts", path: "/home#artifacts-anchor" },
     { icon: Scroll, label: "Pledge", path: "/pledge" },
     { icon: User, label: "Allegiance", path: "/auth" },
