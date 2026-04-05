@@ -1,73 +1,58 @@
-# Welcome to your Lovable project
+# The Gift Giver — A Dark Luxury E-commerce Concept
 
-## Project info
+A cinematic, Middle-earth-inspired e-commerce experience built as a personal project to showcase modern AI-driven development workflows.
 
-**URL**: https://lovable.dev/projects/32babd5f-0e7a-401b-be47-80246e424674
+---
 
-## How can I edit this code?
+## 🛠 Tech Stack
 
-There are several ways of editing your application.
+| Layer | Technology |
+|-------|------------|
+| **Frontend & Logic** | [Lovable](https://lovable.dev) (React, TypeScript, Tailwind CSS) |
+| **Database & Auth** | [Supabase](https://supabase.com) (PostgreSQL, Row-Level Security) |
+| **Automation** | [Make.com](https://make.com) (Webhooks, Email Workflows) |
 
-**Use Lovable**
+---
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/32babd5f-0e7a-401b-be47-80246e424674) and start prompting.
+## ✨ Key Features
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Immersive Dark Luxury UI** — A cinematic Middle-earth theme with smoke particles, ember effects, and rich gold-on-black aesthetics.
+- **Dynamic Product Gallery** — Interactive product cards with hover effects, category filtering, and detailed product pages.
+- **Automated Email Confirmations** — Order confirmation emails triggered automatically via Make.com webhook integrations.
+- **Full Mobile Responsiveness** — Optimised layouts and touch-friendly navigation across all screen sizes.
+- **User Authentication** — Secure sign-up, login, and profile management powered by Supabase Auth.
+- **Shopping Cart & Checkout** — Persistent cart with a streamlined checkout flow and delivery location selection.
+- **Admin Dashboard** — Role-based admin panel for managing orders and product catalogue.
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## ⚠️ Disclaimer
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+> **This is a non-commercial educational project.** I do not own the copyrights to the *Lord of the Rings* universe or its visual assets. All rights belong to their respective owners. This project was created solely for learning and portfolio purposes.
 
-Follow these steps:
+---
+
+## 🚀 How to Run
+
+This project was built and deployed entirely through [Lovable](https://lovable.dev):
+
+1. **Development** — All frontend code, components, and logic were created within the Lovable editor using AI-assisted prompts.
+2. **Backend** — The database, authentication, and edge functions are managed via a connected Supabase project.
+3. **Deployment** — Published directly from Lovable via **Share → Publish**.
+
+To run a local copy:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
 git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
 cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+> **Note:** A connected Supabase project with the correct schema and environment variables is required for full functionality.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 📄 License
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/32babd5f-0e7a-401b-be47-80246e424674) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is provided as-is for educational and portfolio purposes only. No commercial use is intended or permitted.
