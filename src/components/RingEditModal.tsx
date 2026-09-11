@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Ring, RingUpdate, useUpdateRing, useDeleteRing } from "@/hooks/useRings";
 import { toast } from "@/hooks/use-toast";
+import { RingImageUpload } from "@/components/admin/RingImageUpload";
 
 interface RingEditModalProps {
   ring: Ring;
@@ -236,18 +237,11 @@ export function RingEditModal({ ring, open, onOpenChange }: RingEditModalProps) 
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="image_url" className="text-gold/80 font-body text-sm">
-                        Image URL
-                      </Label>
-                      <Input
-                        id="image_url"
-                        value={formData.image_url}
-                        onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                        placeholder="https://..."
-                        className="bg-background/50 border-gold/20 focus:border-gold/50 text-foreground"
-                      />
-                    </div>
+                    <RingImageUpload
+                      value={formData.image_url}
+                      onChange={(url) => setFormData({ ...formData, image_url: url })}
+                    />
+
                   </div>
 
                   {/* Footer */}
