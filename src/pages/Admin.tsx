@@ -174,19 +174,10 @@ function RingForm({
             className="bg-card border-border"
           />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="image_url">Image URL</Label>
-          <Input
-            id="image_url"
-            type="url"
-            value={formData.image_url}
-            onChange={(e) =>
-              setFormData({ ...formData, image_url: e.target.value })
-            }
-            placeholder="https://..."
-            className="bg-card border-border"
-          />
-        </div>
+        <RingImageUpload
+          value={formData.image_url}
+          onChange={(url) => setFormData({ ...formData, image_url: url })}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
