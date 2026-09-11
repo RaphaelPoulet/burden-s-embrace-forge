@@ -44,6 +44,7 @@ import {
 } from "@/hooks/useRings";
 import { Header } from "@/components/Header";
 import { AdminOrdersPanel } from "@/components/admin/AdminOrdersPanel";
+import { RingImageUpload } from "@/components/admin/RingImageUpload";
 import { toast } from "sonner";
 
 const categoryLabels = {
