@@ -47,6 +47,11 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
       return;
     }
 
+    if (ring?.isFallback) {
+      toast({ title: "The forge is resting", description: "Preview artefacts cannot be purchased. Please try the live collection again later." });
+      return;
+    }
+
     addItem({
       id: product.id,
       name: product.name,
@@ -63,7 +68,7 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
   return (
     <>
       <LoginPromptDialog open={loginPromptOpen} onOpenChange={setLoginPromptOpen} />
-      {ring && isAdmin && (
+      {ring && !ring.isFallback && isAdmin && (
         <RingEditModal ring={ring} open={editModalOpen} onOpenChange={setEditModalOpen} />
       )}
       
@@ -75,7 +80,7 @@ export function ProductCard({ product, index, ring }: ProductCardProps) {
         className="group relative"
       >
         {/* HIGH VISIBILITY ADMIN EDIT BUTTON - Positioned ABOVE the card */}
-        {ring && isAdmin && (
+        {ring && !ring.isFallback && isAdmin && (
           <button
             onClick={handleEditClick}
             className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 font-bold text-white uppercase tracking-wider rounded-md shadow-lg transition-all duration-300 hover:scale-105 gpu-accelerated"
