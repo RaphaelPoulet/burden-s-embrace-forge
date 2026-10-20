@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { useRings, Ring } from "@/hooks/useRings";
 
@@ -47,7 +48,8 @@ function mapRingToProduct(ring: Ring) {
 
 export function CatalogueSection() {
   const [activeFilter, setActiveFilter] = useState<FilterCategory>("elves");
-  const { data: rings, isLoading, error } = useRings();
+  const { data: rings, isLoading, error, refetch, isFetching } = useRings({ fallback: true });
+  const isFallback = rings?.some((ring) => ring.isFallback);
 
   // Exclude the One Ring from the grid (it has its own spotlight)
   const catalogRings = rings?.filter((r) => r.category !== "one") || [];
@@ -140,8 +142,21 @@ export function CatalogueSection() {
 
         {/* Loading State */}
         {isLoading && (
-          <div className="flex justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin text-gold" />
+          <div role="status" className="flex flex-col items-center gap-4 py-12 text-muted-foreground">
+            <Loader2 className="w-8 h-8 animate-spin text-gold" aria-hidden="true" />
+            <p>Gathering the artefacts…</p>
+          </div>
+        )}
+
+        {isFallback && (
+          <div role="status" className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 text-center">
+            <p className="font-body text-sm text-muted-foreground">
+              The live forge is temporarily unavailable. Preview collection — purchases are paused.
+            </p>
+            <Button variant="gold" size="sm" disabled={isFetching} onClick={() => refetch()}>
+              {isFetching && <Loader2 className="w-4 h-4 mr-2 animate-spin" aria-hidden="true" />}
+              Retry live collection
+            </Button>
           </div>
         )}
 

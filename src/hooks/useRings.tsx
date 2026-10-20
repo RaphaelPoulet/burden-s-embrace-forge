@@ -1,5 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { fallbackRings } from "@/data/fallbackRings";
+import { fetchCatalogue } from "@/lib/catalogueFetch";
 
 export interface Ring {
   id: string;
@@ -14,21 +16,33 @@ export interface Ring {
   finish: string | null;
   created_at: string;
   updated_at: string;
+  isFallback?: boolean;
 }
 
-export type RingInsert = Omit<Ring, "id" | "created_at" | "updated_at">;
+export type RingInsert = Omit<Ring, "id" | "created_at" | "updated_at" | "isFallback">;
 export type RingUpdate = Partial<RingInsert>;
 
-export function useRings() {
+export function useRings({ fallback = false }: { fallback?: boolean } = {}) {
   return useQuery({
-    queryKey: ["rings"],
+    queryKey: ["rings", fallback ? "public" : "admin"],
     queryFn: async () => {
+      if (fallback) {
+        return fetchCatalogue(async (signal) => {
+          const { data, error } = await supabase.from("rings").select("*")
+            .order("created_at", { ascending: true }).abortSignal(signal);
+          if (error) throw error;
+          return data as Ring[];
+        }, fallbackRings, (data) => !data?.length, "rings");
+      }
       const { data, error } = await supabase
         .from("rings")
         .select("*")
         .order("created_at", { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.error("[Catalogue: admin] Live read failed:", error);
+        throw error;
+      }
       return data as Ring[];
     },
   });
@@ -36,17 +50,20 @@ export function useRings() {
 
 export function useRingsByCategory(category: string) {
   return useQuery({
-    queryKey: ["rings", category],
+    queryKey: ["rings", "public", category],
     queryFn: async () => {
-      let query = supabase.from("rings").select("*");
+      return fetchCatalogue(async (signal) => {
+        let query = supabase.from("rings").select("*");
 
       if (category !== "all") {
         query = query.eq("category", category);
       }
 
-      const { data, error } = await query.order("created_at", { ascending: true });
+      const { data, error } = await query.order("created_at", { ascending: true }).abortSignal(signal);
       if (error) throw error;
       return data as Ring[];
+      }, fallbackRings.filter((ring) => category === "all" || ring.category === category),
+      (data) => !data?.length, `category ${category}`);
     },
   });
 }
@@ -67,6 +84,7 @@ export function useCreateRing() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rings"] });
+      queryClient.invalidateQueries({ queryKey: ["ring"] });
     },
   });
 }
@@ -88,6 +106,7 @@ export function useUpdateRing() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rings"] });
+      queryClient.invalidateQueries({ queryKey: ["ring"] });
     },
   });
 }
@@ -102,6 +121,7 @@ export function useDeleteRing() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["rings"] });
+      queryClient.invalidateQueries({ queryKey: ["ring"] });
     },
   });
 }

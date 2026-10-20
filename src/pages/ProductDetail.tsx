@@ -62,6 +62,11 @@ export default function ProductDetail() {
       return;
     }
 
+    if (product.isFallback) {
+      toast({ title: "The forge is resting", description: "This is a preview artefact. Please return when the live collection is available." });
+      return;
+    }
+
     addItem({
       id: product.id,
       name: product.name,
@@ -80,7 +85,7 @@ export default function ProductDetail() {
       <Header />
       <CartDrawer />
       <LoginPromptDialog open={loginPromptOpen} onOpenChange={setLoginPromptOpen} />
-      {isAdmin && product && (
+      {isAdmin && !product.isFallback && (
         <RingEditModal ring={product} open={editModalOpen} onOpenChange={setEditModalOpen} />
       )}
 
@@ -110,7 +115,7 @@ export default function ProductDetail() {
               className="relative"
             >
               {/* HIGH VISIBILITY ADMIN EDIT BUTTON - Positioned ABOVE the image */}
-              {isAdmin && (
+              {isAdmin && !product.isFallback && (
                 <button
                   onClick={() => setEditModalOpen(true)}
                   className="absolute -top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 px-6 py-3 font-bold text-white uppercase tracking-wider rounded-md shadow-lg transition-all duration-300 hover:scale-105 gpu-accelerated"
@@ -161,6 +166,12 @@ export default function ProductDetail() {
               <p className="font-body text-lg text-muted-foreground mb-6">
                 {product.description}
               </p>
+
+              {product.isFallback && (
+                <p role="status" className="font-body text-sm text-gold-muted mb-6">
+                  Preview artefact — the live forge is temporarily unavailable. Purchases are paused.
+                </p>
+              )}
 
               <div className="font-display text-3xl text-gold mb-8">
                 ${product.price.toLocaleString()}

@@ -17,8 +17,8 @@ export function OneRingSpotlight() {
 
   if (isLoading) {
     return (
-      <section className="py-24 flex justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gold" />
+      <section role="status" aria-label="Gathering the One Ring" className="py-24 flex justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-gold" aria-hidden="true" />
       </section>
     );
   }
@@ -30,6 +30,11 @@ export function OneRingSpotlight() {
   const handleAddToCart = () => {
     if (!user) {
       setLoginPromptOpen(true);
+      return;
+    }
+
+    if (oneRing.isFallback) {
+      toast({ title: "The forge is resting", description: "This is a preview artefact. Purchases will return when the live forge is available." });
       return;
     }
 
