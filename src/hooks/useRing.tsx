@@ -18,7 +18,7 @@ export function useRing(id: string | undefined) {
         .from("rings")
         .select("*")
         .eq("id", id)
-        .maybeSingle().abortSignal(signal);
+        .abortSignal(signal).maybeSingle();
 
       if (error) throw error;
       return data as Ring | null;
@@ -37,7 +37,7 @@ export function useOneRing() {
         .from("rings")
         .select("*")
         .eq("category", "one")
-        .maybeSingle().abortSignal(signal);
+        .abortSignal(signal).maybeSingle();
 
       if (error) throw error;
       return data as Ring | null;
